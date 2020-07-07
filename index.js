@@ -24,8 +24,13 @@ function addNewScrap() {
 
   renderScraps();
 }
+function deleteScrap(position) {
+  scraps.splice(position, 1);
 
-function createScrapCard(title, message) {
+  renderScraps();
+}
+
+function createScrapCard(title, message, position) {
   return `
   <div class="message-cards card text-white bg-dark m-2 col-3">
     <div class="card-header font-weight-bold">${title}</div>
@@ -33,6 +38,10 @@ function createScrapCard(title, message) {
       <p class="card-text">
         ${message}
       </p>
+    </div>
+    <div class="w-100 d-flex justify-content-end pr-2 pb-2">
+      <button class="btn btn-danger mr-1" onclick="deleteScrap(${position})">Deletar</button>
+      <button class="btn btn-info">Editar</button>
     </div>
   </div>
   `;

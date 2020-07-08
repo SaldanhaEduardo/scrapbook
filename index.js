@@ -4,6 +4,7 @@ let messageInput = document.getElementById("messageBody");
 let editMessageInput = document.getElementById("editMessageBody");
 let addScrapBtn = document.getElementById("addButton");
 let scrapsField = document.getElementById("scrapsField");
+let btnSaveEdit = document.getElementById("saveEdit");
 
 let scraps = [];
 
@@ -60,7 +61,22 @@ function openEditModal(position) {
 
   editTitleInput.value = scraps[position].title;
   editMessageInput.value = scraps[position].message;
+
+  btnSaveEdit.setAttribute("onclick", `saveChanges(${position})`);
+}
+
+function saveChanges(position) {
+  let title = editTitleInput.value;
+  let message = editMessageInput;
+
+  title = editMessageTitle;
+  message = editMessageInput;
+  renderScraps();
 }
 
 renderScraps();
 addScrapBtn.onclick = addNewScrap;
+
+/*colocar esse titulo e mensagem no scraps correspondente ao position correspondete,
+chamar renderizar pra renderizar todos os scraps com a edicao, 
+em seguida ou antes de renderizar colocar linha de codigo que fecha o modal(pegar no bootstrap*/

@@ -6,7 +6,7 @@ let addScrapBtn = document.getElementById("addButton");
 let scrapsField = document.getElementById("scrapsField");
 let btnSaveEdit = document.getElementById("saveEdit");
 
-let scraps = [];
+let scraps = JSON.parse(localStorage.getItem("scraps")) || [];
 
 function renderScraps() {
   scrapsField.innerHTML = "";
@@ -31,12 +31,14 @@ function addNewScrap() {
   scraps.push({ title, message });
 
   renderScraps();
+  saveToLocalStorage();
 }
 
 function deleteScrap(position) {
   scraps.splice(position, 1);
 
   renderScraps();
+  saveToLocalStorage();
 }
 
 function createScrapCard(title, message, position) {
@@ -67,16 +69,17 @@ function openEditModal(position) {
 
 function saveChanges(position) {
   let title = editTitleInput.value;
-  let message = editMessageInput;
+  let message = editMessageInput.value;
 
-  title = editMessageTitle;
-  message = editMessageInput;
+  scraps[position] = { title, message };
   renderScraps();
+  $("#editModal").modal("hide");
+  saveToLocalStorage();
+}
+
+function saveToLocalStorage() {
+  localStorage.setItem("scraps", JSON.stringify(scraps));
 }
 
 renderScraps();
 addScrapBtn.onclick = addNewScrap;
-
-/*colocar esse titulo e mensagem no scraps correspondente ao position correspondete,
-chamar renderizar pra renderizar todos os scraps com a edicao, 
-em seguida ou antes de renderizar colocar linha de codigo que fecha o modal(pegar no bootstrap*/

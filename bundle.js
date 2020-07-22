@@ -17,8 +17,11 @@ var TaskList = /*#__PURE__*/function () {
     _classCallCheck(this, TaskList);
 
     this.titleInput = document.getElementById("messageTitle");
+    this.editTitleInput = document.getElementById("editMessageTitle");
     this.messageInput = document.getElementById("messageBody");
+    this.editMessageInput = document.getElementById("editMessageBody");
     this.addBtn = document.getElementById("addButton");
+    this.btnSaveEdit = document.getElementById("saveEdit");
     this.scrapsField = document.getElementById("scrapsField");
     this.scraps = [];
     this.registerAddScrapBtnEvent();
@@ -46,6 +49,11 @@ var TaskList = /*#__PURE__*/function () {
       document.querySelectorAll(".delete-button").forEach(function (item) {
         item.onclick = function (event) {
           return _this2.deleteScrap(event);
+        };
+      });
+      document.querySelectorAll(".edit-button").forEach(function (item) {
+        item.onclick = function (event) {
+          return _this2.openEditModal(event);
         };
       });
     }
@@ -102,9 +110,38 @@ var TaskList = /*#__PURE__*/function () {
       this.scrapsField.innerHTML += html;
     }
   }, {
+    key: "openEditModal",
+    value: function openEditModal(event) {
+      var _this3 = this;
+
+      $("#editModal").modal("toggle");
+      var scrapId = event.path[2].getAttribute("id-scrap");
+      var scrapIndex = this.scraps.findIndex(function (item) {
+        return item.id == scrapId;
+      });
+      this.editTitleInput.value = this.scraps[scrapIndex].title;
+      this.editMessageInput.value = this.scraps[scrapIndex].message;
+
+      this.btnSaveEdit.onclick = function () {
+        return _this3.saveChanges(scrapIndex);
+      };
+    }
+  }, {
+    key: "saveChanges",
+    value: function saveChanges(scrapIndex) {
+      var title = this.editTitleInput.value;
+      var message = this.editMessageInput.value;
+      this.scraps[scrapIndex] = {
+        title: title,
+        message: message
+      };
+      this.renderScraps();
+      $("#editModal").modal("hide");
+    }
+  }, {
     key: "createScrapCard",
     value: function createScrapCard(id, title, message) {
-      return "\n    <div class=\"message-cards card text-white bg-dark m-2 col-3\" id-scrap=\"".concat(id, "\">\n      <div class=\"card-header font-weight-bold\">").concat(title, "</div>\n      <div class=\"card-body\">\n        <p class=\"card-text\">\n          ").concat(message, "\n        </p>\n      </div>\n      <div class=\"w-100 d-flex justify-content-end pr-2 pb-2\">\n        <button class=\"btn btn-danger mr-1 delete-button\">Deletar</button>\n        <button class=\"btn btn-info\">Editar</button>\n      </div>\n    </div>\n    ");
+      return "\n    <div class=\"message-cards card text-white bg-dark m-2 col-3\" id-scrap=\"".concat(id, "\">\n      <div class=\"card-header font-weight-bold\">").concat(title, "</div>\n      <div class=\"card-body\">\n        <p class=\"card-text\">\n          ").concat(message, "\n        </p>\n      </div>\n      <div class=\"w-100 d-flex justify-content-end pr-2 pb-2\">\n        <button class=\"btn btn-danger mr-1 delete-button\">Deletar</button>\n        <button class=\"btn btn-info edit-button\">Editar</button>\n      </div>\n    </div>\n    ");
     }
   }]);
 
